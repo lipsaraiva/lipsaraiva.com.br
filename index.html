@@ -33,6 +33,8 @@
   }
   @media (max-width:600px){
     #navLinks{display:none !important}
+    #heroCue{display:none !important}
+    #heroPortrait{width:min(46vh,100%) !important;height:min(60vh,560px) !important}
   }
 
   /* ---- offcanvas menu (mobile) ---- */
@@ -106,7 +108,7 @@
       </div>
       <div style="font-family:var(--mono);font-size:13px;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.9);text-align:center">Web Design · Sistemas · Branding</div>
     </div>
-    <div style="position:absolute;bottom:38px;left:50%;transform:translateX(-50%);z-index:2;display:flex;flex-direction:column;align-items:center;gap:12px">
+    <div id="heroCue" style="position:absolute;bottom:38px;left:50%;transform:translateX(-50%);z-index:2;display:flex;flex-direction:column;align-items:center;gap:12px">
       <span style="font-family:var(--mono);font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:rgba(255,255,255,.55)">Role para explorar</span>
       <span style="font-size:18px;color:#fff;animation:cueBounce 2.2s ease-in-out infinite">↓</span>
     </div>
