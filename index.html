@@ -33,11 +33,11 @@
   }
   @media (max-width:600px){
     #navLinks{display:none !important}
-    #menuBtn{display:block}
   }
 
   /* ---- offcanvas menu (mobile) ---- */
   #menuBtn{display:none;position:relative;width:44px;height:44px;margin:-10px -10px -10px 0;padding:0;background:none;border:0;color:#fff;cursor:pointer;-webkit-tap-highlight-color:transparent}
+  @media (max-width:600px){#menuBtn{display:block}}
   #menuBtn span{position:absolute;right:11px;height:1.5px;border-radius:2px;background:currentColor;transition:transform .6s cubic-bezier(.77,0,.18,1),width .6s cubic-bezier(.77,0,.18,1),background .3s ease}
   #menuBtn span:nth-child(1){top:17px;width:22px}
   #menuBtn span:nth-child(2){top:25px;width:14px}
@@ -120,7 +120,7 @@
           <div style="font-family:var(--mono);font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--acc);padding-top:10px">// Intro</div>
         </div>
         <div style="flex:3 1 560px" data-p>
-          <p style="margin:0;font-size:clamp(28px,4vw,58px);line-height:1.16;font-weight:500;letter-spacing:-.015em;color:var(--ink)">Felipe Saraiva transforma ideias em <span style="color:var(--acc)">presença digital</span> que gera <span style="color:var(--acc)">resultado</span>. São mais de <span style="color:var(--acc)">25 anos</span> criando sites, sistemas e marcas para negócios que querem crescer online — com estratégia, precisão e cuidado editorial.</p>
+          <p style="margin:0;font-size:clamp(28px,4vw,58px);line-height:1.16;font-weight:500;letter-spacing:-.015em;color:var(--ink)">Transformando ideias em <span style="color:var(--acc)">presença digital</span> que gera <span style="color:var(--acc)">resultado</span>. São mais de <span style="color:var(--acc)">25 anos</span> criando sites, sistemas e marcas para negócios que querem crescer online — com estratégia, precisão e cuidado editorial.</p>
         </div>
       </div>
     </div>
@@ -164,7 +164,7 @@
           <div style="flex:2 1 460px">
             <h2 style="margin:0 0 clamp(14px,2vh,24px);font-size:clamp(26px,4vw,58px);font-weight:700;line-height:1.03;letter-spacing:-.02em;color:var(--dk)" data-p>+25 anos construindo presença digital que <span style="color:var(--acc)">performa</span>.</h2>
             <p style="margin:0 0 clamp(10px,1.4vh,16px);font-size:clamp(14px,1.2vw,17px);line-height:1.5;color:var(--mut2);max-width:56ch" data-p>Da primeira conversa à entrega, cada projeto é tratado como uma peça única. Sites, sistemas sob medida, hospedagem e identidade visual — tudo pensado para transmitir credibilidade e gerar negócio.</p>
-            <p style="margin:0 0 clamp(22px,3.4vh,36px);font-size:clamp(14px,1.2vw,17px);line-height:1.5;color:var(--mut2);max-width:56ch" data-p>Felipe trabalha lado a lado com quem empreende, unindo estratégia, tecnologia e um acabamento visual impecável em cada detalhe.</p>
+            <p style="margin:0 0 clamp(22px,3.4vh,36px);font-size:clamp(14px,1.2vw,17px);line-height:1.5;color:var(--mut2);max-width:56ch" data-p>Trabalhando lado a lado com quem empreende, unindo estratégia, tecnologia e um acabamento visual impecável em cada detalhe.</p>
             <div style="display:flex;flex-wrap:wrap;gap:clamp(20px,3vw,56px)">
               <sc-for list="{{ stats }}" as="s" hint-placeholder-count="3">
                 <div data-p data-p-anim="scale">
@@ -209,8 +209,7 @@
       <div style="max-width:1200px;margin:0 auto;width:100%">
         <div style="display:flex;flex-wrap:wrap;gap:clamp(16px,3vw,60px);align-items:flex-end;margin-bottom:clamp(16px,3vh,48px)">
           <div style="flex:1 1 300px">
-            <div style="font-family:var(--mono);font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--acc);margin-bottom:clamp(10px,1.6vh,18px)" data-p>// Serviços</div>
-            <h2 style="margin:0;font-size:clamp(28px,4vw,60px);font-weight:700;line-height:1.02;letter-spacing:-.02em;color:var(--dk)" data-p>O que Saraiva faz.</h2>
+            <div style="font-family:var(--mono);font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--acc)" data-p>// Serviços</div>
           </div>
           <p style="flex:1 1 300px;margin:0;font-size:clamp(14px,1.2vw,17px);line-height:1.5;color:var(--mut2);max-width:44ch" data-p>Soluções completas para tirar seu projeto do papel e mantê-lo no ar com qualidade.</p>
         </div>
@@ -227,8 +226,8 @@
     </div>
   </section>
 
-  <!-- ===================== DEPOIMENTOS (pinned · tilt) ===================== -->
-  <section data-pin data-anim="tilt" style="position:relative;height:170vh;background:var(--bg)">
+  <!-- ===================== DEPOIMENTOS (pinned · tilt) — oculta até ter depoimentos reais; remova o display:none para exibir ===================== -->
+  <section data-pin data-anim="tilt" style="display:none;position:relative;height:170vh;background:var(--bg)">
     <div style="position:sticky;top:0;height:100vh;overflow:hidden;display:flex;align-items:center;padding:0 clamp(20px,5vw,72px);background:var(--bg);border-top:1px solid var(--line)">
       <div style="max-width:1200px;margin:0 auto;width:100%">
         <div style="font-family:var(--mono);font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--acc);margin-bottom:clamp(30px,5vh,64px)" data-p data-p-anim="mask">// Depoimentos</div>
@@ -253,7 +252,7 @@
       <div style="flex:1 1 340px" data-reveal>
         <div style="font-family:var(--mono);font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--acc);margin-bottom:26px">// Contato</div>
         <h2 style="margin:0 0 26px;font-size:clamp(36px,5.4vw,82px);font-weight:700;line-height:1;letter-spacing:-.02em;color:var(--ink)">Vamos criar algo que <span style="color:var(--acc)">importa</span>.</h2>
-        <p style="margin:0 0 40px;font-size:clamp(16px,1.4vw,19px);line-height:1.6;color:var(--mut);max-width:44ch">Conte sobre seu próximo projeto. Preencha o formulário e Felipe retorna em breve.</p>
+        <p style="margin:0 0 40px;font-size:clamp(16px,1.4vw,19px);line-height:1.6;color:var(--mut);max-width:44ch">Conte sobre seu próximo projeto. Preencha o formulário e retornamos em breve.</p>
         <div style="display:flex;flex-direction:column;gap:14px">
           <div style="font-family:var(--mono);font-size:13px;letter-spacing:.06em;color:rgba(255,255,255,.75)">contato@lipsaraiva.com.br</div>
           <div style="font-family:var(--mono);font-size:13px;letter-spacing:.06em;color:rgba(255,255,255,.75)">lipsaraiva.com.br</div>
@@ -272,7 +271,7 @@
         <sc-if value="{{ sent }}" hint-placeholder-val="{{ false }}">
           <div style="border:1px solid var(--acc);border-radius:10px;padding:44px;display:flex;flex-direction:column;gap:14px">
             <div style="font-size:clamp(26px,3vw,38px);font-weight:700;color:var(--ink)">Mensagem enviada ✓</div>
-            <p style="margin:0;font-size:16px;line-height:1.6;color:var(--mut)">Obrigado pelo contato. Felipe retorna em breve para conversar sobre o seu projeto.</p>
+            <p style="margin:0;font-size:16px;line-height:1.6;color:var(--mut)">Obrigado pelo contato. Retornamos em breve para conversar sobre o seu projeto.</p>
           </div>
         </sc-if>
       </div>
@@ -358,7 +357,7 @@ class Component extends DCLogic {
     return {
       navLinks, expertise, services, testimonials, stats,
       ebLetters: ['E','M','\u00a0','B','R','E','V','E'],
-      year: 2025,
+      year: 2026,
       sent: this.state.sent,
       notSent: !this.state.sent,
       submit: (e) => { e.preventDefault(); this.setState({ sent: true }); },
