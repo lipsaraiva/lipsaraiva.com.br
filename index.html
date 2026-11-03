@@ -33,6 +33,40 @@
   }
   @media (max-width:600px){
     #navLinks{display:none !important}
+    #menuBtn{display:block}
+  }
+
+  /* ---- offcanvas menu (mobile) ---- */
+  #menuBtn{display:none;position:relative;width:44px;height:44px;margin:-10px -10px -10px 0;padding:0;background:none;border:0;color:#fff;cursor:pointer;-webkit-tap-highlight-color:transparent}
+  #menuBtn span{position:absolute;right:11px;height:1.5px;border-radius:2px;background:currentColor;transition:transform .6s cubic-bezier(.77,0,.18,1),width .6s cubic-bezier(.77,0,.18,1),background .3s ease}
+  #menuBtn span:nth-child(1){top:17px;width:22px}
+  #menuBtn span:nth-child(2){top:25px;width:14px}
+  .menu-open #menuBtn span{width:22px}
+  .menu-open #menuBtn span:nth-child(1){transform:translateY(4px) rotate(45deg)}
+  .menu-open #menuBtn span:nth-child(2){transform:translateY(-4px) rotate(-45deg);background:#e8502a}
+  .menu-open #siteNav{background:transparent !important;border-bottom-color:transparent !important;backdrop-filter:none !important;-webkit-backdrop-filter:none !important}
+  body.menu-open{overflow:hidden}
+
+  #offcanvas{position:fixed;inset:0;z-index:999;display:flex;flex-direction:column;justify-content:space-between;padding:clamp(110px,17vh,150px) 20px 36px;background:radial-gradient(circle at 100% 0,rgba(232,80,42,.38),rgba(232,80,42,0) 60%),#141312;clip-path:circle(0 at calc(100% - 32px) 42px);visibility:hidden;transition:clip-path .7s cubic-bezier(.77,0,.18,1) .15s,visibility 0s .85s}
+  .menu-open #offcanvas{clip-path:circle(150% at calc(100% - 32px) 42px);visibility:visible;transition:clip-path .9s cubic-bezier(.77,0,.18,1),visibility 0s}
+  #ocLinks{display:flex;flex-direction:column;counter-reset:oc}
+  #ocLinks a{counter-increment:oc;position:relative;display:flex;align-items:baseline;gap:16px;padding:10px 0;overflow:hidden;color:#fff;font-size:clamp(38px,11vw,60px);font-weight:600;line-height:1.1;letter-spacing:-.03em}
+  #ocLinks a::before{content:"0" counter(oc);font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.16em;color:#e8502a;opacity:0;transition:opacity .3s ease}
+  #ocLinks a::after{content:"";position:absolute;left:0;right:0;bottom:0;height:1px;background:rgba(255,255,255,.13);transform:scaleX(0);transform-origin:left;transition:transform .4s cubic-bezier(.16,1,.3,1)}
+  #ocLinks a span{display:inline-block;transform:translateY(115%) rotate(4deg);transform-origin:left bottom;transition:transform .4s cubic-bezier(.7,0,.84,0),color .3s ease}
+  #ocLinks a:hover span,#ocLinks a:active span{color:#e8502a}
+  .menu-open #ocLinks a::before{opacity:1}
+  .menu-open #ocLinks a::after{transform:scaleX(1);transition-duration:1s}
+  .menu-open #ocLinks a span{transform:none;transition:transform .9s cubic-bezier(.16,1,.3,1),color .3s ease}
+  .menu-open #ocLinks a:nth-child(1) span,.menu-open #ocLinks a:nth-child(1)::before,.menu-open #ocLinks a:nth-child(1)::after{transition-delay:.35s}
+  .menu-open #ocLinks a:nth-child(2) span,.menu-open #ocLinks a:nth-child(2)::before,.menu-open #ocLinks a:nth-child(2)::after{transition-delay:.42s}
+  .menu-open #ocLinks a:nth-child(3) span,.menu-open #ocLinks a:nth-child(3)::before,.menu-open #ocLinks a:nth-child(3)::after{transition-delay:.49s}
+  .menu-open #ocLinks a:nth-child(4) span,.menu-open #ocLinks a:nth-child(4)::before,.menu-open #ocLinks a:nth-child(4)::after{transition-delay:.56s}
+  .menu-open #ocLinks a:nth-child(5) span,.menu-open #ocLinks a:nth-child(5)::before,.menu-open #ocLinks a:nth-child(5)::after{transition-delay:.63s}
+  #ocFoot{display:flex;flex-direction:column;gap:8px;font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.12em;color:rgba(255,255,255,.55);opacity:0;transform:translateY(16px);transition:opacity .3s ease,transform .3s ease}
+  .menu-open #ocFoot{opacity:1;transform:none;transition:opacity .8s ease .75s,transform .8s cubic-bezier(.16,1,.3,1) .75s}
+  @media (prefers-reduced-motion:reduce){
+    #offcanvas,#offcanvas *,#offcanvas a::before,#offcanvas a::after,#menuBtn span{transition-duration:.01s !important;transition-delay:0s !important}
   }
 </style>
 </helmet>
@@ -46,7 +80,20 @@
         <a href="{{ l.href }}" style="font-family:var(--mono);font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--mut)" style-hover="color:#fff">{{ l.label }}</a>
       </sc-for>
     </div>
+    <button id="menuBtn" type="button" aria-label="Menu" aria-controls="offcanvas" aria-expanded="false"><span></span><span></span></button>
   </nav>
+
+  <div id="offcanvas">
+    <div id="ocLinks">
+      <sc-for list="{{ navLinks }}" as="l" hint-placeholder-count="5">
+        <a href="{{ l.href }}"><span>{{ l.label }}</span></a>
+      </sc-for>
+    </div>
+    <div id="ocFoot">
+      <span style="color:#e8502a;letter-spacing:.22em;text-transform:uppercase">// Contato</span>
+      <a href="mailto:contato@lipsaraiva.com.br" style="color:#fff">contato@lipsaraiva.com.br</a>
+    </div>
+  </div>
 
   <!-- ===================== HERO ===================== -->
   <section id="inicio" style="position:relative;height:100vh;min-height:660px;display:flex;flex-direction:column;justify-content:center;align-items:center;overflow:hidden;background:var(--bg)">
@@ -73,7 +120,7 @@
           <div style="font-family:var(--mono);font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--acc);padding-top:10px">// Intro</div>
         </div>
         <div style="flex:3 1 560px" data-p>
-          <p style="margin:0;font-size:clamp(28px,4vw,58px);line-height:1.16;font-weight:500;letter-spacing:-.015em;color:var(--ink)">Transformo ideias em <span style="color:var(--acc)">presença digital</span> que gera <span style="color:var(--acc)">resultado</span>. São mais de <span style="color:var(--acc)">25 anos</span> criando sites, sistemas e marcas para negócios que querem crescer online — com estratégia, precisão e cuidado editorial.</p>
+          <p style="margin:0;font-size:clamp(28px,4vw,58px);line-height:1.16;font-weight:500;letter-spacing:-.015em;color:var(--ink)">Felipe Saraiva transforma ideias em <span style="color:var(--acc)">presença digital</span> que gera <span style="color:var(--acc)">resultado</span>. São mais de <span style="color:var(--acc)">25 anos</span> criando sites, sistemas e marcas para negócios que querem crescer online — com estratégia, precisão e cuidado editorial.</p>
         </div>
       </div>
     </div>
@@ -92,7 +139,7 @@
           </div>
         </div>
         <div style="display:flex;flex-wrap:wrap;gap:0 clamp(24px,5vw,72px)">
-          <sc-for list="{{ expertise }}" as="e" hint-placeholder-count="16">
+          <sc-for list="{{ expertise }}" as="e" hint-placeholder-count="13">
             <div data-p style="flex:1 1 340px;display:flex;align-items:baseline;justify-content:space-between;gap:16px;padding:clamp(12px,1.6vh,20px) 0;border-bottom:1px solid var(--line)">
               <span style="font-size:clamp(15px,1.7vw,21px);font-weight:500;color:var(--ink)">{{ e.label }}</span>
               <span style="font-family:var(--mono);font-size:12px;color:var(--mut)">{{ e.n }}</span>
@@ -111,13 +158,13 @@
         <div style="display:flex;flex-wrap:wrap;gap:clamp(28px,4vw,72px);align-items:center">
           <div style="flex:1 1 260px;max-width:clamp(240px,30vh,360px)" data-p data-p-anim="clip">
             <div style="position:relative;width:100%;aspect-ratio:4/5;border-radius:8px;overflow:hidden;box-shadow:0 30px 80px rgba(22,20,18,.22)">
-              <x-import component-from-global-scope="image-slot" from="./image-slot.js" id="aboutImg" shape="rect" fit="cover" placeholder="FOTO — arraste sua imagem" style="width:100%;height:100%" hint-size="100%,100%"></x-import>
+              <img id="aboutImg" src="./assets/sobre.jpg" alt="Ilustração de Felipe Saraiva" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block">
             </div>
           </div>
           <div style="flex:2 1 460px">
             <h2 style="margin:0 0 clamp(14px,2vh,24px);font-size:clamp(26px,4vw,58px);font-weight:700;line-height:1.03;letter-spacing:-.02em;color:var(--dk)" data-p>+25 anos construindo presença digital que <span style="color:var(--acc)">performa</span>.</h2>
             <p style="margin:0 0 clamp(10px,1.4vh,16px);font-size:clamp(14px,1.2vw,17px);line-height:1.5;color:var(--mut2);max-width:56ch" data-p>Da primeira conversa à entrega, cada projeto é tratado como uma peça única. Sites, sistemas sob medida, hospedagem e identidade visual — tudo pensado para transmitir credibilidade e gerar negócio.</p>
-            <p style="margin:0 0 clamp(22px,3.4vh,36px);font-size:clamp(14px,1.2vw,17px);line-height:1.5;color:var(--mut2);max-width:56ch" data-p>Trabalho lado a lado com quem empreende, unindo estratégia, tecnologia e um acabamento visual impecável em cada detalhe.</p>
+            <p style="margin:0 0 clamp(22px,3.4vh,36px);font-size:clamp(14px,1.2vw,17px);line-height:1.5;color:var(--mut2);max-width:56ch" data-p>Felipe trabalha lado a lado com quem empreende, unindo estratégia, tecnologia e um acabamento visual impecável em cada detalhe.</p>
             <div style="display:flex;flex-wrap:wrap;gap:clamp(20px,3vw,56px)">
               <sc-for list="{{ stats }}" as="s" hint-placeholder-count="3">
                 <div data-p data-p-anim="scale">
@@ -163,12 +210,12 @@
         <div style="display:flex;flex-wrap:wrap;gap:clamp(16px,3vw,60px);align-items:flex-end;margin-bottom:clamp(16px,3vh,48px)">
           <div style="flex:1 1 300px">
             <div style="font-family:var(--mono);font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--acc);margin-bottom:clamp(10px,1.6vh,18px)" data-p>// Serviços</div>
-            <h2 style="margin:0;font-size:clamp(28px,4vw,60px);font-weight:700;line-height:1.02;letter-spacing:-.02em;color:var(--dk)" data-p>O que eu faço.</h2>
+            <h2 style="margin:0;font-size:clamp(28px,4vw,60px);font-weight:700;line-height:1.02;letter-spacing:-.02em;color:var(--dk)" data-p>O que Saraiva faz.</h2>
           </div>
           <p style="flex:1 1 300px;margin:0;font-size:clamp(14px,1.2vw,17px);line-height:1.5;color:var(--mut2);max-width:44ch" data-p>Soluções completas para tirar seu projeto do papel e mantê-lo no ar com qualidade.</p>
         </div>
         <div style="display:flex;flex-wrap:wrap;gap:clamp(10px,1.2vw,18px)">
-          <sc-for list="{{ services }}" as="sv" hint-placeholder-count="6">
+          <sc-for list="{{ services }}" as="sv" hint-placeholder-count="5">
             <div data-p style="flex:{{ sv.grow }} 1 300px;min-width:280px;background:#f6f4ef;border:1px solid var(--line2);border-radius:10px;padding:clamp(15px,2vh,32px) clamp(18px,2vw,32px);display:flex;flex-direction:column;gap:clamp(6px,1vh,11px);transition:box-shadow .5s ease,border-color .5s ease" style-hover="box-shadow:0 26px 60px rgba(22,20,18,.14);border-color:var(--acc)">
               <span style="font-family:var(--mono);font-size:12px;color:var(--acc)">{{ sv.n }}</span>
               <h3 style="margin:0;font-size:clamp(18px,1.8vw,25px);font-weight:600;line-height:1.1;letter-spacing:-.01em;color:var(--dk)">{{ sv.title }}</h3>
@@ -206,7 +253,7 @@
       <div style="flex:1 1 340px" data-reveal>
         <div style="font-family:var(--mono);font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--acc);margin-bottom:26px">// Contato</div>
         <h2 style="margin:0 0 26px;font-size:clamp(36px,5.4vw,82px);font-weight:700;line-height:1;letter-spacing:-.02em;color:var(--ink)">Vamos criar algo que <span style="color:var(--acc)">importa</span>.</h2>
-        <p style="margin:0 0 40px;font-size:clamp(16px,1.4vw,19px);line-height:1.6;color:var(--mut);max-width:44ch">Conte sobre seu próximo projeto. Preencha o formulário e retorno em breve.</p>
+        <p style="margin:0 0 40px;font-size:clamp(16px,1.4vw,19px);line-height:1.6;color:var(--mut);max-width:44ch">Conte sobre seu próximo projeto. Preencha o formulário e Felipe retorna em breve.</p>
         <div style="display:flex;flex-direction:column;gap:14px">
           <div style="font-family:var(--mono);font-size:13px;letter-spacing:.06em;color:rgba(255,255,255,.75)">contato@lipsaraiva.com.br</div>
           <div style="font-family:var(--mono);font-size:13px;letter-spacing:.06em;color:rgba(255,255,255,.75)">lipsaraiva.com.br</div>
@@ -225,7 +272,7 @@
         <sc-if value="{{ sent }}" hint-placeholder-val="{{ false }}">
           <div style="border:1px solid var(--acc);border-radius:10px;padding:44px;display:flex;flex-direction:column;gap:14px">
             <div style="font-size:clamp(26px,3vw,38px);font-weight:700;color:var(--ink)">Mensagem enviada ✓</div>
-            <p style="margin:0;font-size:16px;line-height:1.6;color:var(--mut)">Obrigado pelo contato. Retorno em breve para conversarmos sobre o seu projeto.</p>
+            <p style="margin:0;font-size:16px;line-height:1.6;color:var(--mut)">Obrigado pelo contato. Felipe retorna em breve para conversar sobre o seu projeto.</p>
           </div>
         </sc-if>
       </div>
@@ -270,10 +317,10 @@ class Component extends DCLogic {
 
   renderVals() {
     const expertiseLabels = [
-      'Estratégia Digital', 'E-commerce & Lojas', 'Landing Pages de Conversão', 'UX/UI Design',
+      'E-commerce & Lojas', 'Landing Pages de Conversão', 'UX/UI Design',
       'Sites Institucionais', 'Design Gráfico & Identidade', 'Sistemas Web Sob Medida', 'Branding & Logotipo',
       'Hospedagem & E-mail Pro', 'Registro de Domínios', 'Otimização & SEO', 'Integrações & APIs',
-      'Performance & Responsividade', 'Manutenção & Suporte', 'Redes Sociais', 'Direção Criativa',
+      'Performance & Responsividade', 'Redes Sociais',
     ];
     const expertise = expertiseLabels.map((label, i) => ({
       label,
@@ -285,8 +332,7 @@ class Component extends DCLogic {
       { n: '02', title: 'Sistemas web sob medida', text: 'Soluções feitas sob medida para o seu negócio ou projeto.', grow: 1 },
       { n: '03', title: 'Design gráfico & web', text: 'Visual profissional, do jeito que a sua marca merece.', grow: 1 },
       { n: '04', title: 'Hospedagem & e-mail pro', text: 'Seu site e e-mail funcionando direitinho, sem dor de cabeça.', grow: 1.35 },
-      { n: '05', title: 'Registro & manutenção de domínios', text: 'Cuido do seu endereço na internet para você não se preocupar.', grow: 1.1 },
-      { n: '06', title: 'Redes sociais', text: 'Presença e relevância nas redes, com estratégia e consistência.', grow: 1.1 },
+      { n: '05', title: 'Registro & manutenção de domínios', text: 'Cuidado completo com o seu endereço na internet, sem preocupação.', grow: 1.1 },
     ];
 
     const testimonials = [
@@ -297,7 +343,7 @@ class Component extends DCLogic {
 
     const stats = [
       { n: '25+', label: 'Anos de experiência' },
-      { n: '200+', label: 'Projetos entregues' },
+      { n: '100+', label: 'Projetos entregues' },
       { n: '100%', label: 'Feito sob medida' },
     ];
 
@@ -378,6 +424,7 @@ class Component extends DCLogic {
     this.startHeroGlow();
     this.startMarquee();
     this.bindMotion();
+    this.bindMenu();
     this.onScroll();
     requestAnimationFrame(() => this.onScroll());
     setTimeout(() => this.onScroll(), 60);
@@ -393,6 +440,28 @@ class Component extends DCLogic {
       window.removeEventListener('scroll', this._req);
       window.removeEventListener('resize', this._req);
     }
+    if (this._menuClick) {
+      document.removeEventListener('click', this._menuClick);
+      document.removeEventListener('keydown', this._menuKey);
+    }
+  }
+
+  // Offcanvas state lives on <body> (outside the rendered tree) so re-renders
+  // never reset it; CSS in <helmet> drives all the animation.
+  bindMenu() {
+    if (this._menuClick) return;
+    const set = (open) => {
+      document.body.classList.toggle('menu-open', open);
+      const b = document.getElementById('menuBtn');
+      if (b) b.setAttribute('aria-expanded', String(open));
+    };
+    this._menuClick = (e) => {
+      if (e.target.closest('#menuBtn')) set(!document.body.classList.contains('menu-open'));
+      else if (e.target.closest('#offcanvas a')) set(false);
+    };
+    this._menuKey = (e) => { if (e.key === 'Escape') set(false); };
+    document.addEventListener('click', this._menuClick);
+    document.addEventListener('keydown', this._menuKey);
   }
 
   bindMotion() {
