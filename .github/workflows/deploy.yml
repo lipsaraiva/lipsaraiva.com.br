@@ -14,7 +14,16 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             set -e
-            cd /home/lipsaraiva.com.br/public_html
+            P=/home/lipsaraiva.com.br/public_html; U=lipsa7087
+            cd $P
             git pull origin main
-            chown -R lipsa7087:lipsa7087 /home/lipsaraiva.com.br/public_html
-            chown lipsa7087:nobody /home/lipsaraiva.com.br/public_html
+            chown -R $U:$U $P && chown $U:nobody $P && chmod 700 $P/.git
+            run() { sudo -u $U -H "$@"; }
+            run composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader
+            # Primeiro deploy: cria o .env de producao a partir do modelo
+            if [ ! -f .env ]; then run cp .env.example .env; run php artisan key:generate --force; fi
+            run touch database/database.sqlite
+            run php artisan migrate --force
+            [ -L public/storage ] || run php artisan storage:link
+            run php artisan optimize
+            run php artisan filament:optimize

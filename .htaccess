@@ -1,0 +1,6 @@
+# Rede de segurança: a raiz do site no servidor deve apontar para /public.
+# Se ainda apontar para cá, tudo é servido de /public e .env, vendor etc. ficam inacessíveis.
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteRule ^(.*)$ public/$1 [L]
+</IfModule>

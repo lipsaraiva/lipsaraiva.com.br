@@ -1,0 +1,671 @@
+@verbatim
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SARAIVA — Web Design & Desenvolvimento</title>
+<meta name="description" content="Portfólio digital SARAIVA — web design, sistemas e branding.">
+<link rel="canonical" href="https://lipsaraiva.com.br/">
+@endverbatim
+<script>window.__SITE = {{ Js::from(['posts' => $posts, 'csrf' => csrf_token()]) }};</script>
+@verbatim
+<script src="/support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:#141312;color:#fff;font-family:'Space Grotesk',system-ui,sans-serif;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;overflow-x:hidden}
+  ::selection{background:#e8502a;color:#fff}
+  a{color:#e8502a;text-decoration:none}
+  a:hover{color:#ff6a44}
+  input,textarea{font-family:inherit}
+  @keyframes cueBounce{0%,100%{transform:translateY(0);opacity:.45}50%{transform:translateY(9px);opacity:1}}
+  @keyframes ebPulse{0%,100%{transform:scale(1);opacity:1;box-shadow:0 0 0 0 rgba(232,80,42,.5)}50%{transform:scale(.8);opacity:.6;box-shadow:0 0 0 10px rgba(232,80,42,0)}}
+  @keyframes grainShift{0%{transform:translate(0,0)}33%{transform:translate(-5%,3%)}66%{transform:translate(4%,-4%)}100%{transform:translate(-3%,-2%)}}
+  @media (max-width:768px){
+    /* Unpin full-screen sections on mobile: 1-column content is taller than
+       the viewport, so let them flow normally and reveal on scroll instead. */
+    [data-pin]{height:auto !important}
+    [data-pin] > div{position:static !important;height:auto !important;min-height:auto !important;overflow:visible !important;display:block !important;padding-top:clamp(84px,13vh,112px) !important;padding-bottom:clamp(60px,9vh,88px) !important}
+    #cases{height:180vh !important}
+    #navLinks{display:none !important}
+  }
+  @media (max-width:600px){
+    #heroCue{display:none !important}
+    #heroPortrait{width:min(46vh,100%) !important;height:min(60vh,560px) !important}
+  }
+
+  /* ---- offcanvas menu (mobile) ---- */
+  #menuBtn{display:none;position:relative;width:44px;height:44px;margin:-10px -10px -10px 0;padding:0;background:none;border:0;color:#fff;cursor:pointer;-webkit-tap-highlight-color:transparent}
+  @media (max-width:768px){#menuBtn{display:block}}
+  #menuBtn span{position:absolute;right:11px;height:1.5px;border-radius:2px;background:currentColor;transition:transform .6s cubic-bezier(.77,0,.18,1),width .6s cubic-bezier(.77,0,.18,1),background .3s ease}
+  #menuBtn span:nth-child(1){top:17px;width:22px}
+  #menuBtn span:nth-child(2){top:25px;width:14px}
+  .menu-open #menuBtn span{width:22px}
+  .menu-open #menuBtn span:nth-child(1){transform:translateY(4px) rotate(45deg)}
+  .menu-open #menuBtn span:nth-child(2){transform:translateY(-4px) rotate(-45deg);background:#e8502a}
+  .menu-open #siteNav{background:transparent !important;border-bottom-color:transparent !important;backdrop-filter:none !important;-webkit-backdrop-filter:none !important}
+  body.menu-open{overflow:hidden}
+
+  #offcanvas{position:fixed;inset:0;z-index:999;display:flex;flex-direction:column;justify-content:space-between;padding:clamp(110px,17vh,150px) 20px 36px;background:radial-gradient(circle at 100% 0,rgba(232,80,42,.38),rgba(232,80,42,0) 60%),#141312;clip-path:circle(0 at calc(100% - 32px) 42px);visibility:hidden;transition:clip-path .7s cubic-bezier(.77,0,.18,1) .15s,visibility 0s .85s}
+  .menu-open #offcanvas{clip-path:circle(150% at calc(100% - 32px) 42px);visibility:visible;transition:clip-path .9s cubic-bezier(.77,0,.18,1),visibility 0s}
+  #ocLinks{display:flex;flex-direction:column;counter-reset:oc}
+  #ocLinks a{counter-increment:oc;position:relative;display:flex;align-items:baseline;gap:16px;padding:10px 0;overflow:hidden;color:#fff;font-size:clamp(38px,11vw,60px);font-weight:600;line-height:1.1;letter-spacing:-.03em}
+  #ocLinks a::before{content:"0" counter(oc);font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.16em;color:#e8502a;opacity:0;transition:opacity .3s ease}
+  #ocLinks a::after{content:"";position:absolute;left:0;right:0;bottom:0;height:1px;background:rgba(255,255,255,.13);transform:scaleX(0);transform-origin:left;transition:transform .4s cubic-bezier(.16,1,.3,1)}
+  #ocLinks a span{display:inline-block;transform:translateY(115%) rotate(4deg);transform-origin:left bottom;transition:transform .4s cubic-bezier(.7,0,.84,0),color .3s ease}
+  #ocLinks a:hover span,#ocLinks a:active span{color:#e8502a}
+  .menu-open #ocLinks a::before{opacity:1}
+  .menu-open #ocLinks a::after{transform:scaleX(1);transition-duration:1s}
+  .menu-open #ocLinks a span{transform:none;transition:transform .9s cubic-bezier(.16,1,.3,1),color .3s ease}
+  .menu-open #ocLinks a:nth-child(1) span,.menu-open #ocLinks a:nth-child(1)::before,.menu-open #ocLinks a:nth-child(1)::after{transition-delay:.35s}
+  .menu-open #ocLinks a:nth-child(2) span,.menu-open #ocLinks a:nth-child(2)::before,.menu-open #ocLinks a:nth-child(2)::after{transition-delay:.42s}
+  .menu-open #ocLinks a:nth-child(3) span,.menu-open #ocLinks a:nth-child(3)::before,.menu-open #ocLinks a:nth-child(3)::after{transition-delay:.49s}
+  .menu-open #ocLinks a:nth-child(4) span,.menu-open #ocLinks a:nth-child(4)::before,.menu-open #ocLinks a:nth-child(4)::after{transition-delay:.56s}
+  .menu-open #ocLinks a:nth-child(5) span,.menu-open #ocLinks a:nth-child(5)::before,.menu-open #ocLinks a:nth-child(5)::after{transition-delay:.63s}
+  .menu-open #ocLinks a:nth-child(6) span,.menu-open #ocLinks a:nth-child(6)::before,.menu-open #ocLinks a:nth-child(6)::after{transition-delay:.7s}
+  #ocFoot{display:flex;flex-direction:column;gap:8px;font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.12em;color:rgba(255,255,255,.55);opacity:0;transform:translateY(16px);transition:opacity .3s ease,transform .3s ease}
+  .menu-open #ocFoot{opacity:1;transform:none;transition:opacity .8s ease .75s,transform .8s cubic-bezier(.16,1,.3,1) .75s}
+  @media (prefers-reduced-motion:reduce){
+    #offcanvas,#offcanvas *,#offcanvas a::before,#offcanvas a::after,#menuBtn span{transition-duration:.01s !important;transition-delay:0s !important}
+  }
+</style>
+</helmet>
+<div style="--bg:#141312;--bg2:#efece6;--ink:#fff;--dk:#161412;--mut:rgba(255,255,255,.55);--mut2:rgba(22,20,18,.6);--acc:#e8502a;--acc2:#ff6a44;--line:rgba(255,255,255,.13);--line2:rgba(22,20,18,.13);--mono:'Space Mono',monospace;position:relative;width:100%;background:var(--bg);overflow-x:clip">
+
+  <!-- ===================== NAV ===================== -->
+  <nav id="siteNav" style="position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;justify-content:space-between;align-items:center;gap:16px;padding:20px clamp(20px,5vw,72px);border-bottom:1px solid transparent;background:transparent;transition:background .4s ease,border-color .4s ease,backdrop-filter .4s ease">
+    <a href="#inicio" style="font-weight:700;font-size:19px;letter-spacing:.2em;color:var(--ink)">SARAIVA</a>
+    <div id="navLinks" style="display:flex;align-items:center;gap:clamp(14px,2.3vw,38px)">
+      <sc-for list="{{ navLinks }}" as="l" hint-placeholder-count="6">
+        <a href="{{ l.href }}" style="font-family:var(--mono);font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--mut)" style-hover="color:#fff">{{ l.label }}</a>
+      </sc-for>
+    </div>
+    <button id="menuBtn" type="button" aria-label="Menu" aria-controls="offcanvas" aria-expanded="false"><span></span><span></span></button>
+  </nav>
+
+  <div id="offcanvas">
+    <div id="ocLinks">
+      <sc-for list="{{ navLinks }}" as="l" hint-placeholder-count="6">
+        <a href="{{ l.href }}"><span>{{ l.label }}</span></a>
+      </sc-for>
+    </div>
+    <div id="ocFoot">
+      <span style="color:#e8502a;letter-spacing:.22em;text-transform:uppercase">// Contato</span>
+      <a href="mailto:contato@lipsaraiva.com.br" style="color:#fff">contato@lipsaraiva.com.br</a>
+    </div>
+  </div>
+
+  <!-- ===================== HERO ===================== -->
+  <section id="inicio" style="position:relative;height:100vh;min-height:660px;display:flex;flex-direction:column;justify-content:center;align-items:center;overflow:hidden;background:var(--bg)">
+    <div id="heroGlow" style="position:absolute;top:47%;left:50%;width:min(128vh,1180px);height:min(128vh,1180px);transform:translate(-50%,-50%);background:radial-gradient(circle at 50% 44%,#f6a13a 0%,#e8502a 24%,rgba(158,42,22,.55) 44%,rgba(20,19,18,0) 68%);pointer-events:none"></div>
+    <div id="heroGrain" style="position:absolute;inset:-8%;z-index:1;pointer-events:none;opacity:.32;mix-blend-mode:overlay;background-image:url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22160%22 height=%22160%22><filter id=%22n%22><feTurbulence type=%22fractalNoise%22 baseFrequency=%220.9%22 numOctaves=%222%22 stitchTiles=%22stitch%22/></filter><rect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23n)%22/></svg>');background-size:160px 160px;animation:grainShift 1.2s steps(3) infinite"></div>
+    <div style="position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;gap:26px;padding:0 24px">
+      <div style="font-family:var(--mono);font-size:12px;letter-spacing:.34em;text-transform:uppercase;color:rgba(255,255,255,.82)">// Portfólio Digital</div>
+      <div id="heroPortrait" style="position:relative;width:min(54vh,500px);height:min(70vh,660px);border-radius:8px;overflow:hidden;box-shadow:0 44px 130px rgba(0,0,0,.6);will-change:transform">
+        <video id="heroVideo" src="./assets/video_hero.m4v" autoPlay loop="loop" muted="muted" playsInline style="width:100%;height:100%;object-fit:cover;display:block"></video>
+      </div>
+      <div style="font-family:var(--mono);font-size:13px;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.9);text-align:center">Web Design · Sistemas · Branding</div>
+    </div>
+    <div id="heroCue" style="position:absolute;bottom:38px;left:50%;transform:translateX(-50%);z-index:2;display:flex;flex-direction:column;align-items:center;gap:12px">
+      <span style="font-family:var(--mono);font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:rgba(255,255,255,.55)">Role para explorar</span>
+      <span style="font-size:18px;color:#fff;animation:cueBounce 2.2s ease-in-out infinite">↓</span>
+    </div>
+  </section>
+
+  <!-- ===================== INTRO (pinned · mask) ===================== -->
+  <section data-pin data-anim="mask" style="position:relative;height:160vh;background:var(--bg)">
+    <div style="position:sticky;top:0;height:100vh;overflow:hidden;display:flex;align-items:center;padding:0 clamp(20px,5vw,72px);background:var(--bg);border-top:1px solid var(--line)">
+      <div style="max-width:1200px;margin:0 auto;width:100%;display:flex;flex-wrap:wrap;gap:clamp(20px,4vw,72px)">
+        <div style="flex:1 1 190px;min-width:150px" data-p>
+          <div style="font-family:var(--mono);font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--acc);padding-top:10px">// Intro</div>
+        </div>
+        <div style="flex:3 1 560px" data-p>
+          <p style="margin:0;font-size:clamp(28px,4vw,58px);line-height:1.16;font-weight:500;letter-spacing:-.015em;color:var(--ink)">Transformando ideias em <span style="color:var(--acc)">presença digital</span> que gera <span style="color:var(--acc)">resultado</span>. São mais de <span style="color:var(--acc)">25 anos</span> criando sites, sistemas e marcas para negócios que querem crescer online — com estratégia, precisão e cuidado editorial.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== EXPERTISE (pinned · cascade) ===================== -->
+  <section data-pin data-anim="cascade" style="position:relative;height:190vh;background:var(--bg)">
+    <div style="position:sticky;top:0;height:100vh;overflow:hidden;display:flex;align-items:center;padding:0 clamp(20px,5vw,72px);background:var(--bg)">
+      <div style="max-width:1200px;margin:0 auto;width:100%">
+        <div style="display:flex;flex-wrap:wrap;gap:clamp(20px,4vw,72px);margin-bottom:clamp(34px,5vh,64px)">
+          <div style="flex:1 1 190px;min-width:150px" data-p data-p-anim="mask">
+            <div style="font-family:var(--mono);font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--acc);padding-top:14px">// Expertise</div>
+          </div>
+          <div style="flex:3 1 560px" data-p data-p-anim="mask">
+            <h2 style="margin:0;font-size:clamp(34px,5vw,74px);font-weight:700;line-height:1.02;letter-spacing:-.02em;color:var(--ink)">Áreas de atuação.</h2>
+          </div>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:0 clamp(24px,5vw,72px)">
+          <sc-for list="{{ expertise }}" as="e" hint-placeholder-count="13">
+            <div data-p style="flex:1 1 340px;display:flex;align-items:baseline;justify-content:space-between;gap:16px;padding:clamp(12px,1.6vh,20px) 0;border-bottom:1px solid var(--line)">
+              <span style="font-size:clamp(15px,1.7vw,21px);font-weight:500;color:var(--ink)">{{ e.label }}</span>
+              <span style="font-family:var(--mono);font-size:12px;color:var(--mut)">{{ e.n }}</span>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== SOBRE (pinned · clip + right) ===================== -->
+  <section id="sobre" data-pin data-anim="right" style="position:relative;height:185vh;background:var(--bg2)">
+    <div style="position:sticky;top:0;height:100vh;overflow:hidden;display:flex;align-items:center;padding:0 clamp(20px,5vw,72px);background:var(--bg2);color:var(--dk)">
+      <div style="max-width:1200px;margin:0 auto;width:100%">
+        <div style="font-family:var(--mono);font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--acc);margin-bottom:clamp(14px,2.5vh,40px)" data-p data-p-anim="mask">// Sobre</div>
+        <div style="display:flex;flex-wrap:wrap;gap:clamp(28px,4vw,72px);align-items:center">
+          <div style="flex:1 1 260px;max-width:clamp(240px,30vh,360px)" data-p data-p-anim="clip">
+            <div style="position:relative;width:100%;aspect-ratio:4/5;border-radius:8px;overflow:hidden;box-shadow:0 30px 80px rgba(22,20,18,.22)">
+              <img id="aboutImg" src="./assets/sobre.jpg" alt="Ilustração de Felipe Saraiva" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block">
+            </div>
+          </div>
+          <div style="flex:2 1 460px">
+            <h2 style="margin:0 0 clamp(14px,2vh,24px);font-size:clamp(26px,4vw,58px);font-weight:700;line-height:1.03;letter-spacing:-.02em;color:var(--dk)" data-p>+25 anos construindo presença digital que <span style="color:var(--acc)">performa</span>.</h2>
+            <p style="margin:0 0 clamp(10px,1.4vh,16px);font-size:clamp(14px,1.2vw,17px);line-height:1.5;color:var(--mut2);max-width:56ch" data-p>Da primeira conversa à entrega, cada projeto é tratado como uma peça única. Sites, sistemas sob medida, hospedagem e identidade visual — tudo pensado para transmitir credibilidade e gerar negócio.</p>
+            <p style="margin:0 0 clamp(22px,3.4vh,36px);font-size:clamp(14px,1.2vw,17px);line-height:1.5;color:var(--mut2);max-width:56ch" data-p>Trabalhando lado a lado com quem empreende, unindo estratégia, tecnologia e um acabamento visual impecável em cada detalhe.</p>
+            <div style="display:flex;flex-wrap:wrap;gap:clamp(20px,3vw,56px)">
+              <sc-for list="{{ stats }}" as="s" hint-placeholder-count="3">
+                <div data-p data-p-anim="scale">
+                  <div style="font-size:clamp(30px,4vw,52px);font-weight:700;line-height:1;letter-spacing:-.02em;color:var(--dk)">{{ s.n }}</div>
+                  <div style="font-family:var(--mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--mut2);margin-top:8px">{{ s.label }}</div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== CASES (persiana) ===================== -->
+  <section id="cases" style="position:relative;height:240vh;background:var(--bg)">
+    <div style="position:sticky;top:0;height:100vh;overflow:hidden;display:flex;align-items:center;justify-content:center">
+      <div style="position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;gap:clamp(18px,4vh,44px);pointer-events:none;transform:rotate(-4deg) scale(1.15)">
+        <div data-marquee="1" style="display:flex;white-space:nowrap;will-change:transform;font-size:clamp(70px,11vw,170px);font-weight:700;letter-spacing:-.02em;line-height:1;color:transparent;-webkit-text-stroke:1px rgba(239,236,230,.09)"><span style="padding-right:.4em">EM BREVE — CASES EM PRODUÇÃO — EM BREVE — CASES EM PRODUÇÃO —</span><span style="padding-right:.4em">EM BREVE — CASES EM PRODUÇÃO — EM BREVE — CASES EM PRODUÇÃO —</span></div>
+        <div data-marquee="-1" style="display:flex;white-space:nowrap;will-change:transform;font-size:clamp(70px,11vw,170px);font-weight:700;letter-spacing:-.02em;line-height:1;color:transparent;-webkit-text-stroke:1px rgba(232,80,42,.16)"><span style="padding-right:.4em">NOVOS PROJETOS — 2026 — NOVOS PROJETOS — 2026 — NOVOS PROJETOS — 2026 —</span><span style="padding-right:.4em">NOVOS PROJETOS — 2026 — NOVOS PROJETOS — 2026 — NOVOS PROJETOS — 2026 —</span></div>
+      </div>
+      <div style="position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 60% 50% at 50% 50%,rgba(20,19,18,.92),rgba(20,19,18,.55) 55%,rgba(20,19,18,0) 100%)"></div>
+      <div style="position:absolute;top:clamp(88px,13vh,128px);left:clamp(20px,5vw,72px);z-index:3;font-family:var(--mono);font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--acc)">// Cases selecionados</div>
+      <div style="position:relative;z-index:3;display:flex;flex-direction:column;align-items:center;gap:clamp(22px,4vh,40px);text-align:center;padding:0 20px">
+        <div id="ebTitle" style="display:flex;font-size:clamp(64px,14vw,230px);font-weight:600;line-height:.9;letter-spacing:-.04em;color:var(--cream,#efece6)">
+          <sc-for list="{{ ebLetters }}" as="l" hint-placeholder-count="8">
+            <span style="display:inline-block;overflow:hidden;padding:0 .01em .06em"><span data-eb style="display:inline-block;transform:translateY(110%);will-change:transform">{{ l }}</span></span>
+          </sc-for>
+        </div>
+        <div id="ebSub" style="display:flex;align-items:center;gap:14px;font-family:var(--mono);font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.7);opacity:0">
+          <span style="width:8px;height:8px;border-radius:50%;background:var(--acc);animation:ebPulse 1.8s ease-in-out infinite"></span>
+          <span>Cases em produção — novos projetos chegando</span>
+        </div>
+        <div style="width:min(280px,60vw);height:1px;background:rgba(255,255,255,.14);overflow:hidden"><div id="ebBar" style="height:100%;width:100%;background:var(--acc);transform:scaleX(0);transform-origin:left"></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== SERVIÇOS (pinned · rise) ===================== -->
+  <section id="servicos" data-pin data-anim="mask" style="position:relative;height:190vh;background:var(--bg2)">
+    <div style="position:sticky;top:0;height:100vh;overflow:hidden;display:flex;align-items:center;padding:0 clamp(20px,5vw,72px);background:var(--bg2);color:var(--dk)">
+      <div style="max-width:1200px;margin:0 auto;width:100%">
+        <div style="display:flex;flex-wrap:wrap;gap:clamp(16px,3vw,60px);align-items:flex-end;margin-bottom:clamp(16px,3vh,48px)">
+          <div style="flex:1 1 300px">
+            <div style="font-family:var(--mono);font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--acc)" data-p>// Serviços</div>
+          </div>
+          <p style="flex:1 1 300px;margin:0;font-size:clamp(14px,1.2vw,17px);line-height:1.5;color:var(--mut2);max-width:44ch" data-p>Soluções completas para tirar seu projeto do papel e mantê-lo no ar com qualidade.</p>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:clamp(10px,1.2vw,18px)">
+          <sc-for list="{{ services }}" as="sv" hint-placeholder-count="5">
+            <div data-p style="flex:{{ sv.grow }} 1 300px;min-width:280px;background:#f6f4ef;border:1px solid var(--line2);border-radius:10px;padding:clamp(15px,2vh,32px) clamp(18px,2vw,32px);display:flex;flex-direction:column;gap:clamp(6px,1vh,11px);transition:box-shadow .5s ease,border-color .5s ease" style-hover="box-shadow:0 26px 60px rgba(22,20,18,.14);border-color:var(--acc)">
+              <span style="font-family:var(--mono);font-size:12px;color:var(--acc)">{{ sv.n }}</span>
+              <h3 style="margin:0;font-size:clamp(18px,1.8vw,25px);font-weight:600;line-height:1.1;letter-spacing:-.01em;color:var(--dk)">{{ sv.title }}</h3>
+              <p style="margin:0;font-size:clamp(13px,1vw,15px);line-height:1.4;color:var(--mut2)">{{ sv.text }}</p>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== DEPOIMENTOS (pinned · tilt) — oculta até ter depoimentos reais; remova o display:none para exibir ===================== -->
+  <section data-pin data-anim="tilt" style="display:none;position:relative;height:170vh;background:var(--bg)">
+    <div style="position:sticky;top:0;height:100vh;overflow:hidden;display:flex;align-items:center;padding:0 clamp(20px,5vw,72px);background:var(--bg);border-top:1px solid var(--line)">
+      <div style="max-width:1200px;margin:0 auto;width:100%">
+        <div style="font-family:var(--mono);font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--acc);margin-bottom:clamp(30px,5vh,64px)" data-p data-p-anim="mask">// Depoimentos</div>
+        <div style="display:flex;flex-wrap:wrap;gap:clamp(16px,2vw,28px)">
+          <sc-for list="{{ testimonials }}" as="t" hint-placeholder-count="3">
+            <div data-p style="flex:1 1 300px;min-width:280px;border:1px solid var(--line);border-radius:10px;padding:clamp(28px,3vw,44px);display:flex;flex-direction:column;justify-content:space-between;gap:28px;transform-origin:top center">
+              <p style="margin:0;font-size:clamp(17px,1.7vw,23px);line-height:1.45;font-weight:500;color:var(--ink)">“{{ t.quote }}”</p>
+              <div>
+                <div style="font-size:16px;font-weight:600;color:var(--ink)">{{ t.name }}</div>
+                <div style="font-family:var(--mono);font-size:12px;letter-spacing:.08em;color:var(--mut);margin-top:5px">{{ t.role }}</div>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== ARTIGOS (3 mais recentes, vindos de window.__SITE.posts) ===================== -->
+  <sc-if value="{{ hasPosts }}" hint-placeholder-val="{{ false }}">
+    <section id="artigos" style="background:var(--bg);padding:clamp(96px,14vh,170px) clamp(20px,5vw,72px);border-top:1px solid var(--line)">
+      <div style="max-width:1200px;margin:0 auto">
+        <div data-reveal style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:20px;margin-bottom:clamp(36px,6vh,64px)">
+          <div>
+            <div style="font-family:var(--mono);font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--acc);margin-bottom:18px">// Artigos</div>
+            <h2 style="margin:0;font-size:clamp(34px,5vw,74px);font-weight:700;line-height:1.02;letter-spacing:-.02em;color:var(--ink)">Últimos artigos.</h2>
+          </div>
+          <a href="/artigos" style="font-family:var(--mono);font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--mut)" style-hover="color:#fff">Ver todos →</a>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:clamp(28px,3vw,44px)">
+          <sc-for list="{{ posts }}" as="p" hint-placeholder-count="3">
+            <a href="{{ p.url }}" data-reveal style="flex:1 1 300px;min-width:260px;max-width:100%;display:flex;flex-direction:column;gap:12px;color:var(--ink)" style-hover="color:var(--acc2)">
+              <div style="aspect-ratio:16/10;border-radius:8px;overflow:hidden;background:#1d1b19">
+                <img src="{{ p.capa }}" alt="" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block">
+              </div>
+              <span style="font-family:var(--mono);font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--acc);margin-top:6px">{{ p.dataFmt }}</span>
+              <h3 style="margin:0;font-size:clamp(20px,2vw,26px);font-weight:600;line-height:1.15;letter-spacing:-.01em;color:inherit">{{ p.titulo }}</h3>
+              <p style="margin:0;font-size:15px;line-height:1.5;color:var(--mut)">{{ p.descricao }}</p>
+            </a>
+          </sc-for>
+        </div>
+      </div>
+    </section>
+  </sc-if>
+
+  <!-- ===================== CONTATO ===================== -->
+  <section id="contato" style="background:var(--bg);min-height:100vh;display:flex;align-items:center;padding:clamp(96px,14vh,190px) clamp(20px,5vw,72px);border-top:1px solid var(--line)">
+    <div style="max-width:1200px;margin:0 auto;width:100%;display:flex;flex-wrap:wrap;gap:clamp(40px,6vw,96px)">
+      <div style="flex:1 1 340px" data-reveal>
+        <div style="font-family:var(--mono);font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--acc);margin-bottom:26px">// Contato</div>
+        <h2 style="margin:0 0 26px;font-size:clamp(36px,5.4vw,82px);font-weight:700;line-height:1;letter-spacing:-.02em;color:var(--ink)">Vamos criar algo que <span style="color:var(--acc)">importa</span>.</h2>
+        <p style="margin:0 0 40px;font-size:clamp(16px,1.4vw,19px);line-height:1.6;color:var(--mut);max-width:44ch">Conte sobre seu próximo projeto. Preencha o formulário e retornamos em breve.</p>
+        <div style="display:flex;flex-direction:column;gap:14px">
+          <div style="font-family:var(--mono);font-size:13px;letter-spacing:.06em;color:rgba(255,255,255,.75)">contato@lipsaraiva.com.br</div>
+          <div style="font-family:var(--mono);font-size:13px;letter-spacing:.06em;color:rgba(255,255,255,.75)">lipsaraiva.com.br</div>
+        </div>
+      </div>
+      <div style="flex:1 1 380px" data-reveal>
+        <sc-if value="{{ notSent }}" hint-placeholder-val="{{ true }}">
+          <form onSubmit="{{ submit }}" style="display:flex;flex-direction:column;gap:26px">
+            <input type="text" name="nome" required placeholder="Nome completo" style="width:100%;background:transparent;border:none;border-bottom:1px solid var(--line);color:#fff;font-size:17px;padding:14px 0;outline:none" style-focus="border-bottom-color:var(--acc)">
+            <input type="email" name="email" required placeholder="E-mail" style="width:100%;background:transparent;border:none;border-bottom:1px solid var(--line);color:#fff;font-size:17px;padding:14px 0;outline:none" style-focus="border-bottom-color:var(--acc)">
+            <input type="tel" name="telefone" placeholder="Telefone (opcional)" style="width:100%;background:transparent;border:none;border-bottom:1px solid var(--line);color:#fff;font-size:17px;padding:14px 0;outline:none" style-focus="border-bottom-color:var(--acc)">
+            <textarea name="mensagem" required rows="4" placeholder="Sobre o seu projeto" style="width:100%;background:transparent;border:none;border-bottom:1px solid var(--line);color:#fff;font-size:17px;padding:14px 0;outline:none;resize:vertical" style-focus="border-bottom-color:var(--acc)"></textarea>
+            <!-- honeypot: invisível para pessoas, robôs preenchem -->
+            <input type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
+            <sc-if value="{{ hasError }}" hint-placeholder-val="{{ false }}">
+              <p role="alert" style="margin:0;font-size:15px;line-height:1.5;color:var(--acc2)">{{ error }}</p>
+            </sc-if>
+            <button type="submit" style="align-self:flex-start;margin-top:8px;background:var(--acc);color:#fff;border:none;border-radius:6px;padding:16px 34px;font-family:var(--mono);font-size:13px;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;transition:background .3s ease" style-hover="background:var(--acc2)">{{ sendLabel }}</button>
+          </form>
+        </sc-if>
+        <sc-if value="{{ sent }}" hint-placeholder-val="{{ false }}">
+          <div style="border:1px solid var(--acc);border-radius:10px;padding:44px;display:flex;flex-direction:column;gap:14px">
+            <div style="font-size:clamp(26px,3vw,38px);font-weight:700;color:var(--ink)">Mensagem enviada ✓</div>
+            <p style="margin:0;font-size:16px;line-height:1.6;color:var(--mut)">Obrigado pelo contato. Retornamos em breve para conversar sobre o seu projeto.</p>
+          </div>
+        </sc-if>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== RODAPÉ ===================== -->
+  <footer style="background:var(--bg);border-top:1px solid var(--line);padding:clamp(60px,9vh,110px) clamp(20px,5vw,72px) 48px">
+    <div style="max-width:1200px;margin:0 auto">
+      <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:32px;padding-bottom:clamp(48px,8vh,90px)">
+        <div style="font-weight:700;font-size:clamp(48px,10vw,140px);letter-spacing:.02em;line-height:.9;color:var(--ink)">SARAIVA</div>
+        <a href="#inicio" style="font-family:var(--mono);font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--mut)" style-hover="color:#fff">Voltar ao topo ↑</a>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:20px;padding-top:32px;border-top:1px solid var(--line)">
+        <span style="font-family:var(--mono);font-size:12px;letter-spacing:.08em;color:var(--mut)">© {{ year }} Saraiva · Todos os direitos reservados</span>
+        <span style="font-family:var(--mono);font-size:12px;letter-spacing:.08em;color:var(--mut)">lipsaraiva.com.br</span>
+      </div>
+    </div>
+  </footer>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:&quot;100%&quot;,&quot;height&quot;:&quot;100%&quot;}}">
+class Component extends DCLogic {
+  state = { sent: false, sending: false, error: '', posts: (window.__SITE && window.__SITE.posts) || [] };
+
+  async sendContact(e) {
+    e.preventDefault();
+    if (this.state.sending) return;
+    this.setState({ sending: true, error: '' });
+    try {
+      const r = await fetch('/contato', {
+        method: 'POST',
+        headers: { 'Accept': 'application/json', 'X-CSRF-TOKEN': (window.__SITE && window.__SITE.csrf) || '' },
+        body: new FormData(e.target),
+      });
+      if (r.ok) return this.setState({ sent: true, sending: false });
+      const msg = r.status === 429 ? 'Muitas tentativas. Aguarde alguns minutos e tente de novo.'
+        : r.status === 422 ? 'Confira os campos: nome, e-mail válido e mensagem são obrigatórios.'
+        : 'Não foi possível enviar agora. Tente de novo ou escreva para contato@lipsaraiva.com.br.';
+      this.setState({ sending: false, error: msg });
+    } catch (err) {
+      this.setState({ sending: false, error: 'Sem conexão. Tente de novo ou escreva para contato@lipsaraiva.com.br.' });
+    }
+  }
+
+  buildCases() {
+    const K = 10;
+    const raw = [
+      { n: '01', title: 'Zuri Estética', cat: 'Landing Page · Estética & Beleza', desc: 'Landing page de alta conversão para destacar os serviços da clínica e facilitar o agendamento online de novos clientes.', grad: 'linear-gradient(142deg,#f4972f 0%,#e8502a 55%,#7c1d0f 100%)' },
+      { n: '02', title: 'Imóveis Fabiana', cat: 'Portal Imobiliário · Real Estate', desc: 'Portal com busca inteligente de imóveis, integração direta ao WhatsApp e painel administrativo simples de operar.', grad: 'linear-gradient(142deg,#e9b84a 0%,#c8791f 55%,#5a3410 100%)' },
+      { n: '03', title: 'Advocacia SR', cat: 'Site Institucional · Jurídico', desc: 'Site elegante e responsivo com blog integrado e formulário seguro, focado em credibilidade e captação de clientes.', grad: 'linear-gradient(142deg,#3c3f45 0%,#212327 55%,#0e0f11 100%)' },
+      { n: '04', title: 'Ucorp', cat: 'Plataforma · Mobilidade Urbana', desc: 'Plataforma moderna no estilo Uber, apresentando soluções inovadoras com atendimento personalizado para clientes e parceiros.', grad: 'linear-gradient(142deg,#e8502a 0%,#a11f16 55%,#3a0d08 100%)' },
+      { n: '05', title: 'Metalúrgica Croácia', cat: 'Site Institucional · Indústria', desc: 'Layout exclusivo e otimizado para apresentar serviços e diferenciais, com navegação simples e contato facilitado.', grad: 'linear-gradient(142deg,#4a6a86 0%,#274257 55%,#0e1922 100%)' },
+      { n: '06', title: 'Estafácil', cat: 'Site Institucional · Estacionamento', desc: 'Site responsivo que apresenta serviços, tecnologia e diferenciais da empresa, transmitindo credibilidade a clientes e parceiros.', grad: 'linear-gradient(142deg,#c98a4a 0%,#8a5222 55%,#3a2110 100%)' },
+    ];
+    return raw.map(c => ({
+      ...c,
+      slats: Array.from({ length: K }, (_, k) => ({ top: (k * (100 / K)) + '%', pos: (k * (100 / (K - 1))) + '%' })),
+    }));
+  }
+
+  renderVals() {
+    const expertiseLabels = [
+      'E-commerce & Lojas', 'Landing Pages de Conversão', 'UX/UI Design',
+      'Sites Institucionais', 'Design Gráfico & Identidade', 'Sistemas Web Sob Medida', 'Branding & Logotipo',
+      'Hospedagem & E-mail Pro', 'Registro de Domínios', 'Otimização & SEO', 'Integrações & APIs',
+      'Performance & Responsividade', 'Redes Sociais',
+    ];
+    const expertise = expertiseLabels.map((label, i) => ({
+      label,
+      n: String(i + 1).padStart(2, '0'),
+    }));
+
+    const services = [
+      { n: '01', title: 'Landing pages & websites', text: 'Sites bonitos, rápidos e pensados para converter.', grow: 1.35 },
+      { n: '02', title: 'Sistemas web sob medida', text: 'Soluções feitas sob medida para o seu negócio ou projeto.', grow: 1 },
+      { n: '03', title: 'Design gráfico & web', text: 'Visual profissional, do jeito que a sua marca merece.', grow: 1 },
+      { n: '04', title: 'Hospedagem & e-mail pro', text: 'Seu site e e-mail funcionando direitinho, sem dor de cabeça.', grow: 1.35 },
+      { n: '05', title: 'Registro & manutenção de domínios', text: 'Cuidado completo com o seu endereço na internet, sem preocupação.', grow: 1.1 },
+    ];
+
+    const testimonials = [
+      { quote: 'Entregou muito além do combinado. Nosso site virou a principal fonte de novos clientes.', name: 'Fabiana R.', role: 'Imóveis Fabiana' },
+      { quote: 'Profissionalismo do briefing à entrega. O sistema organizou toda a nossa operação.', name: 'Dra. Sânzia R.', role: 'Advocacia SR' },
+      { quote: 'Rápido, bonito e converte. A landing page superou nossas metas de agendamento.', name: 'Equipe Zuri', role: 'Zuri Estética' },
+    ];
+
+    const stats = [
+      { n: '25+', label: 'Anos de experiência' },
+      { n: '100+', label: 'Projetos entregues' },
+      { n: '100%', label: 'Feito sob medida' },
+    ];
+
+    const navLinks = [
+      { href: '#inicio', label: 'Início' },
+      { href: '#sobre', label: 'Sobre' },
+      { href: '#cases', label: 'Cases' },
+      { href: '#servicos', label: 'Serviços' },
+      { href: '/artigos', label: 'Artigos' },
+      { href: '#contato', label: 'Contato' },
+    ];
+
+    return {
+      navLinks, expertise, services, testimonials, stats,
+      posts: this.state.posts,
+      hasPosts: this.state.posts.length > 0,
+      ebLetters: ['E','M','\u00a0','B','R','E','V','E'],
+      year: 2026,
+      sent: this.state.sent,
+      notSent: !this.state.sent,
+      submit: (e) => this.sendContact(e),
+      error: this.state.error,
+      hasError: !!this.state.error,
+      sendLabel: this.state.sending ? 'Enviando…' : 'Enviar mensagem →',
+    };
+  }
+
+  startHeroGlow() {
+    const glow = document.getElementById('heroGlow');
+    const hero = document.getElementById('inicio');
+    if (!glow || !hero) return;
+    // target (tx,ty) tracks mouse in -1..1; cur lerps toward it
+    let tx = 0, ty = 0, cx = 0, cy = 0, t0 = performance.now();
+    const clampN = (n, a, b) => Math.max(a, Math.min(b, n));
+    const onMove = (e) => {
+      const r = hero.getBoundingClientRect();
+      tx = clampN(((e.clientX - r.left) / r.width) * 2 - 1, -1, 1);
+      ty = clampN(((e.clientY - r.top) / r.height) * 2 - 1, -1, 1);
+    };
+    hero.addEventListener('pointermove', onMove);
+    hero.addEventListener('pointerleave', () => { tx = 0; ty = 0; });
+    const tick = (now) => {
+      const y = this._heroScroll || 0;
+      cx += (tx - cx) * 0.06;
+      cy += (ty - cy) * 0.06;
+      const pulse = 1 + Math.sin((now - t0) / 1400) * 0.11;   // slow breathing
+      const scrollScale = 1 + Math.min(y, 800) / 3600;
+      const scale = pulse * scrollScale;
+      const dx = cx * 46, dy = cy * 34;
+      glow.style.transform = 'translate(calc(-50% + ' + dx + 'px), calc(-50% + ' + dy + 'px)) scale(' + scale + ')';
+      const near = 1 - Math.min(1, Math.hypot(cx, cy));         // brighter toward center
+      const base = clampN(1 - y / 900, 0.14, 1);
+      glow.style.opacity = String(base * (0.86 + near * 0.14 + (pulse - 1) * 1.2));
+      this._glowRaf = requestAnimationFrame(tick);
+    };
+    this._glowRaf = requestAnimationFrame(tick);
+  }
+
+  startMarquee() {
+    let off = 0, lastY = window.scrollY, vel = 0;
+    const tick = () => {
+      const y = window.scrollY;
+      vel += ((y - lastY) - vel) * 0.1; lastY = y;
+      off += 0.6 + Math.abs(vel) * 0.5;
+      document.querySelectorAll('[data-marquee]').forEach((row) => {
+        const dir = Number(row.getAttribute('data-marquee'));
+        const w = (row.firstElementChild && row.firstElementChild.offsetWidth) || 1;
+        const x = off % w;
+        row.style.transform = 'translateX(' + (dir > 0 ? -x : x - w) + 'px)';
+      });
+      this._mqRaf = requestAnimationFrame(tick);
+    };
+    this._mqRaf = requestAnimationFrame(tick);
+  }
+
+  componentWillUnmount() {
+    if (this._mqRaf) cancelAnimationFrame(this._mqRaf);
+    if (this._glowRaf) cancelAnimationFrame(this._glowRaf);
+  }
+
+  componentDidMount() {
+    const v = document.getElementById('heroVideo');
+    if (v) { v.muted = true; v.loop = true; const p = v.play(); if (p && p.catch) p.catch(() => {}); }
+    this.startHeroGlow();
+    this.startMarquee();
+    this.bindMotion();
+    this.bindMenu();
+    this.onScroll();
+    requestAnimationFrame(() => this.onScroll());
+    setTimeout(() => this.onScroll(), 60);
+  }
+
+  componentDidUpdate() {
+    requestAnimationFrame(() => this.onScroll());
+  }
+
+  componentWillUnmount() {
+    if (this._req) {
+      document.removeEventListener('scroll', this._req, true);
+      window.removeEventListener('scroll', this._req);
+      window.removeEventListener('resize', this._req);
+    }
+    if (this._menuClick) {
+      document.removeEventListener('click', this._menuClick);
+      document.removeEventListener('keydown', this._menuKey);
+    }
+  }
+
+  // Offcanvas state lives on <body> (outside the rendered tree) so re-renders
+  // never reset it; CSS in <helmet> drives all the animation.
+  bindMenu() {
+    if (this._menuClick) return;
+    const set = (open) => {
+      document.body.classList.toggle('menu-open', open);
+      const b = document.getElementById('menuBtn');
+      if (b) b.setAttribute('aria-expanded', String(open));
+    };
+    this._menuClick = (e) => {
+      if (e.target.closest('#menuBtn')) set(!document.body.classList.contains('menu-open'));
+      else if (e.target.closest('#offcanvas a')) set(false);
+    };
+    this._menuKey = (e) => { if (e.key === 'Escape') set(false); };
+    document.addEventListener('click', this._menuClick);
+    document.addEventListener('keydown', this._menuKey);
+  }
+
+  bindMotion() {
+    if (this._bound) return;
+    this._bound = true;
+    this._ticking = false;
+    this._req = () => {
+      if (!this._ticking) { this._ticking = true; requestAnimationFrame(() => this.onScroll()); }
+    };
+    document.addEventListener('scroll', this._req, { passive: true, capture: true });
+    window.addEventListener('scroll', this._req, { passive: true });
+    window.addEventListener('resize', this._req);
+  }
+
+  // Applies one element's scroll-in transform for a given local progress 0..1.
+  applyAnim(el, anim, lp) {
+    const e = 1 - Math.pow(1 - lp, 3); // easeOutCubic — very smooth
+    if (anim === 'clip') {
+      el.style.clipPath = 'inset(0 0 ' + ((1 - e) * 100).toFixed(2) + '% 0)';
+      el.style.transform = 'scale(' + (1.06 - 0.06 * e).toFixed(4) + ')';
+      el.style.opacity = '1';
+      return;
+    }
+    let tr = '';
+    if (anim === 'mask') tr = 'translateY(' + ((1 - e) * 46).toFixed(2) + 'px)';
+    else if (anim === 'cascade') tr = 'translateX(' + (-(1 - e) * 66).toFixed(2) + 'px)';
+    else if (anim === 'right') tr = 'translateX(' + ((1 - e) * 84).toFixed(2) + 'px)';
+    else if (anim === 'left') tr = 'translateX(' + (-(1 - e) * 84).toFixed(2) + 'px)';
+    else if (anim === 'scale') tr = 'scale(' + (0.82 + 0.18 * e).toFixed(4) + ')';
+    else if (anim === 'tilt') tr = 'perspective(1000px) rotateX(' + ((1 - e) * 16).toFixed(2) + 'deg) translateY(' + ((1 - e) * 58).toFixed(2) + 'px)';
+    else tr = 'translateY(' + ((1 - e) * 46).toFixed(2) + 'px)';
+    el.style.transform = tr;
+    el.style.opacity = String(e);
+  }
+
+  // Queries the LIVE DOM every call — never caches node refs, so it stays
+  // correct across React re-renders.
+  onScroll() {
+    this._ticking = false;
+    const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+    const vh = window.innerHeight;
+
+    // ---- simple reveal for non-pinned tail (Contato / footer) ----
+    document.querySelectorAll('[data-reveal]').forEach((el) => {
+      if (!el.dataset.revInit) {
+        el.dataset.revInit = '1';
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(32px)';
+        el.style.transition = 'opacity .9s cubic-bezier(.16,1,.3,1), transform .9s cubic-bezier(.16,1,.3,1)';
+        el.style.willChange = 'opacity, transform';
+      }
+      if (el.dataset.revShown) return;
+      const r = el.getBoundingClientRect();
+      if (r.top < vh * 0.9 && r.bottom > 0) {
+        el.dataset.revShown = '1';
+        el.style.opacity = '1';
+        el.style.transform = 'none';
+      }
+    });
+
+    // ---- pinned full-screen sections ----
+    const mobile = window.matchMedia('(max-width:768px)').matches;
+    document.querySelectorAll('[data-pin]').forEach((sec) => {
+      const targets = sec.querySelectorAll('[data-p]');
+      if (mobile) {
+        // On mobile the sections are unpinned (CSS) and flow normally — use a
+        // plain fade-up reveal instead of scroll-progress transforms.
+        targets.forEach((t) => {
+          if (!t.dataset.mInit) {
+            t.dataset.mInit = '1';
+            t.style.clipPath = 'none';
+            t.style.transition = 'opacity .8s cubic-bezier(.16,1,.3,1), transform .8s cubic-bezier(.16,1,.3,1)';
+            t.style.willChange = 'opacity, transform';
+          }
+          if (t.dataset.mShown) return;
+          const r = t.getBoundingClientRect();
+          if (r.top < vh * 0.88 && r.bottom > 0) {
+            t.dataset.mShown = '1';
+            t.style.opacity = '1';
+            t.style.transform = 'none';
+          } else {
+            t.style.opacity = '0';
+            t.style.transform = 'translateY(28px)';
+          }
+        });
+        return;
+      }
+      const rect = sec.getBoundingClientRect();
+      const total = Math.max(1, sec.offsetHeight - vh);
+      const prog = clamp(-rect.top / total, 0, 1);
+      const anim = sec.dataset.anim || 'mask';
+      const M = targets.length || 1;
+      const spread = 0.42;  // how far the stagger fans out across items
+      const win = 0.30;     // each item's reveal window; done well before prog=1 → dwell
+      targets.forEach((t, j) => {
+        if (!t.dataset.pInit) { t.dataset.pInit = '1'; t.style.willChange = 'transform, opacity'; }
+        const startAt = M > 1 ? (j / M) * spread : 0;
+        const lp = clamp((prog - startAt) / win, 0, 1);
+        this.applyAnim(t, t.dataset.pAnim || anim, lp);
+      });
+    });
+
+    // ---- nav + hero parallax ----
+    const nav = document.getElementById('siteNav');
+    const glow = document.getElementById('heroGlow');
+    const portrait = document.getElementById('heroPortrait');
+    const hero = document.getElementById('inicio');
+    let y = hero ? Math.max(0, -hero.getBoundingClientRect().top) : 0;
+    if (nav) {
+      const on = y > 40;
+      nav.style.background = on ? 'rgba(20,19,18,.72)' : 'transparent';
+      nav.style.backdropFilter = on ? 'blur(12px)' : 'none';
+      nav.style.webkitBackdropFilter = on ? 'blur(12px)' : 'none';
+      nav.style.borderBottomColor = on ? 'rgba(255,255,255,.12)' : 'transparent';
+    }
+    if (portrait && y < vh * 1.4) portrait.style.transform = 'translateY(' + (y * 0.12) + 'px)';
+    this._heroScroll = y;
+
+    // ---- cases: EM BREVE ----
+    const casesSec = document.getElementById('cases');
+    if (!casesSec) return;
+    const rect = casesSec.getBoundingClientRect();
+    const total = Math.max(1, casesSec.offsetHeight - vh);
+    const p = clamp((vh - rect.top) / (total + vh), 0, 1);
+    const letters = casesSec.querySelectorAll('[data-eb]');
+    const L = letters.length || 1;
+    letters.forEach((el, k) => {
+      const t = clamp((p - 0.18 - k * 0.022) / 0.16, 0, 1);
+      const e = 1 - Math.pow(1 - t, 3);
+      el.style.transform = 'translateY(' + ((1 - e) * 110) + '%)';
+    });
+    const sub = document.getElementById('ebSub');
+    const sp = clamp((p - 0.42) / 0.12, 0, 1);
+    if (sub) { sub.style.opacity = String(sp); sub.style.transform = 'translateY(' + ((1 - sp) * 14) + 'px)'; }
+    const bar = document.getElementById('ebBar');
+    if (bar) bar.style.transform = 'scaleX(' + clamp((p - 0.45) / 0.4, 0, 1) + ')';
+  }
+}
+</script>
+</body>
+</html>
+@endverbatim
