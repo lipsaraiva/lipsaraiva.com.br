@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://lipsaraiva.com.br/sitemap.xml

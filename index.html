@@ -30,16 +30,16 @@
     [data-pin]{height:auto !important}
     [data-pin] > div{position:static !important;height:auto !important;min-height:auto !important;overflow:visible !important;display:block !important;padding-top:clamp(84px,13vh,112px) !important;padding-bottom:clamp(60px,9vh,88px) !important}
     #cases{height:180vh !important}
+    #navLinks{display:none !important}
   }
   @media (max-width:600px){
-    #navLinks{display:none !important}
     #heroCue{display:none !important}
     #heroPortrait{width:min(46vh,100%) !important;height:min(60vh,560px) !important}
   }
 
   /* ---- offcanvas menu (mobile) ---- */
   #menuBtn{display:none;position:relative;width:44px;height:44px;margin:-10px -10px -10px 0;padding:0;background:none;border:0;color:#fff;cursor:pointer;-webkit-tap-highlight-color:transparent}
-  @media (max-width:600px){#menuBtn{display:block}}
+  @media (max-width:768px){#menuBtn{display:block}}
   #menuBtn span{position:absolute;right:11px;height:1.5px;border-radius:2px;background:currentColor;transition:transform .6s cubic-bezier(.77,0,.18,1),width .6s cubic-bezier(.77,0,.18,1),background .3s ease}
   #menuBtn span:nth-child(1){top:17px;width:22px}
   #menuBtn span:nth-child(2){top:25px;width:14px}
@@ -65,6 +65,7 @@
   .menu-open #ocLinks a:nth-child(3) span,.menu-open #ocLinks a:nth-child(3)::before,.menu-open #ocLinks a:nth-child(3)::after{transition-delay:.49s}
   .menu-open #ocLinks a:nth-child(4) span,.menu-open #ocLinks a:nth-child(4)::before,.menu-open #ocLinks a:nth-child(4)::after{transition-delay:.56s}
   .menu-open #ocLinks a:nth-child(5) span,.menu-open #ocLinks a:nth-child(5)::before,.menu-open #ocLinks a:nth-child(5)::after{transition-delay:.63s}
+  .menu-open #ocLinks a:nth-child(6) span,.menu-open #ocLinks a:nth-child(6)::before,.menu-open #ocLinks a:nth-child(6)::after{transition-delay:.7s}
   #ocFoot{display:flex;flex-direction:column;gap:8px;font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.12em;color:rgba(255,255,255,.55);opacity:0;transform:translateY(16px);transition:opacity .3s ease,transform .3s ease}
   .menu-open #ocFoot{opacity:1;transform:none;transition:opacity .8s ease .75s,transform .8s cubic-bezier(.16,1,.3,1) .75s}
   @media (prefers-reduced-motion:reduce){
@@ -78,7 +79,7 @@
   <nav id="siteNav" style="position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;justify-content:space-between;align-items:center;gap:16px;padding:20px clamp(20px,5vw,72px);border-bottom:1px solid transparent;background:transparent;transition:background .4s ease,border-color .4s ease,backdrop-filter .4s ease">
     <a href="#inicio" style="font-weight:700;font-size:19px;letter-spacing:.2em;color:var(--ink)">SARAIVA</a>
     <div id="navLinks" style="display:flex;align-items:center;gap:clamp(14px,2.3vw,38px)">
-      <sc-for list="{{ navLinks }}" as="l" hint-placeholder-count="5">
+      <sc-for list="{{ navLinks }}" as="l" hint-placeholder-count="6">
         <a href="{{ l.href }}" style="font-family:var(--mono);font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--mut)" style-hover="color:#fff">{{ l.label }}</a>
       </sc-for>
     </div>
@@ -87,7 +88,7 @@
 
   <div id="offcanvas">
     <div id="ocLinks">
-      <sc-for list="{{ navLinks }}" as="l" hint-placeholder-count="5">
+      <sc-for list="{{ navLinks }}" as="l" hint-placeholder-count="6">
         <a href="{{ l.href }}"><span>{{ l.label }}</span></a>
       </sc-for>
     </div>
@@ -248,6 +249,33 @@
     </div>
   </section>
 
+  <!-- ===================== ARTIGOS (gerado por npm run build → artigos/latest.json) ===================== -->
+  <sc-if value="{{ hasPosts }}" hint-placeholder-val="{{ false }}">
+    <section id="artigos" style="background:var(--bg);padding:clamp(96px,14vh,170px) clamp(20px,5vw,72px);border-top:1px solid var(--line)">
+      <div style="max-width:1200px;margin:0 auto">
+        <div data-reveal style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:20px;margin-bottom:clamp(36px,6vh,64px)">
+          <div>
+            <div style="font-family:var(--mono);font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--acc);margin-bottom:18px">// Artigos</div>
+            <h2 style="margin:0;font-size:clamp(34px,5vw,74px);font-weight:700;line-height:1.02;letter-spacing:-.02em;color:var(--ink)">Últimos artigos.</h2>
+          </div>
+          <a href="/artigos/" style="font-family:var(--mono);font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--mut)" style-hover="color:#fff">Ver todos →</a>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:clamp(28px,3vw,44px)">
+          <sc-for list="{{ posts }}" as="p" hint-placeholder-count="3">
+            <a href="{{ p.url }}" data-reveal style="flex:1 1 300px;min-width:260px;max-width:100%;display:flex;flex-direction:column;gap:12px;color:var(--ink)" style-hover="color:var(--acc2)">
+              <div style="aspect-ratio:16/10;border-radius:8px;overflow:hidden;background:#1d1b19">
+                <img src="{{ p.capa }}" alt="" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block">
+              </div>
+              <span style="font-family:var(--mono);font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--acc);margin-top:6px">{{ p.dataFmt }}</span>
+              <h3 style="margin:0;font-size:clamp(20px,2vw,26px);font-weight:600;line-height:1.15;letter-spacing:-.01em;color:inherit">{{ p.titulo }}</h3>
+              <p style="margin:0;font-size:15px;line-height:1.5;color:var(--mut)">{{ p.descricao }}</p>
+            </a>
+          </sc-for>
+        </div>
+      </div>
+    </section>
+  </sc-if>
+
   <!-- ===================== CONTATO ===================== -->
   <section id="contato" style="background:var(--bg);min-height:100vh;display:flex;align-items:center;padding:clamp(96px,14vh,190px) clamp(20px,5vw,72px);border-top:1px solid var(--line)">
     <div style="max-width:1200px;margin:0 auto;width:100%;display:flex;flex-wrap:wrap;gap:clamp(40px,6vw,96px)">
@@ -298,7 +326,7 @@
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:&quot;100%&quot;,&quot;height&quot;:&quot;100%&quot;}}">
 class Component extends DCLogic {
-  state = { sent: false };
+  state = { sent: false, posts: [] };
 
   buildCases() {
     const K = 10;
@@ -353,11 +381,14 @@ class Component extends DCLogic {
       { href: '#sobre', label: 'Sobre' },
       { href: '#cases', label: 'Cases' },
       { href: '#servicos', label: 'Serviços' },
+      { href: '/artigos/', label: 'Artigos' },
       { href: '#contato', label: 'Contato' },
     ];
 
     return {
       navLinks, expertise, services, testimonials, stats,
+      posts: this.state.posts,
+      hasPosts: this.state.posts.length > 0,
       ebLetters: ['E','M','\u00a0','B','R','E','V','E'],
       year: 2026,
       sent: this.state.sent,
@@ -426,6 +457,7 @@ class Component extends DCLogic {
     this.startMarquee();
     this.bindMotion();
     this.bindMenu();
+    fetch('./artigos/latest.json').then((r) => (r.ok ? r.json() : [])).then((posts) => this.setState({ posts })).catch(() => {});
     this.onScroll();
     requestAnimationFrame(() => this.onScroll());
     setTimeout(() => this.onScroll(), 60);
